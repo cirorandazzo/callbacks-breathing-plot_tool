@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Callback Breath Traces</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        select {
+            margin: 10px;
+        }
+
+        input {
+            margin: 10px;
+        }
+
+        /* Flex container to align select boxes horizontally */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allow wrapping if there's not enough space */
+            gap: 10px;
+            /* Space between select boxes */
+            margin-bottom: 20px;
+            /* Space below the filter container */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Callback Breath Traces</h1>
+
+    Select elements to filter below.
+
+
+    <div class="filter-container">
+        <div>
+            <label for="birdFilter">Bird:</label>
+            <select id="birdFilter">
+                <option value="">All</option>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+
+        <div>
+            <label for="stimPhaseFilter">Stim Phase:</label>
+            <select id="stimPhaseFilter">
+                <option value="">All</option>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+
+        <div>
+            <label for="putativeCallFilter">Putative call:</label>
+            <select id="putativeCallFilter">
+                <option value="">All</option>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+
+        <div>
+            <label for="blockFilter">Block:</label>
+            <select id="blockFilter">
+                <option value="">All</option>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+    </div>
+
+    <div>
+        <label for="wavFilenameFilter">Wav Filename:</label>
+        <input type="text" id="wavFilenameFilter" placeholder="Search wav filename">
+    </div>
+
+    <h2 id="dataTable-title">Filtered Trials</h2>
+    <div id="dataTable-label"></div>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Bird</th>
+                <th>Stim Phase</th>
+                <th>Call</th>
+                <th>Block</th>
+                <th>Plot</th>
+                <th>Wav Filename</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be populated here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
