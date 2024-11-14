@@ -89,6 +89,27 @@
         <input type="text" id="wavFilenameFilter" placeholder="Search wav filename">
     </div>
 
+    Plot Description:
+    <ul>
+        <li>Each plot represents 1 stimulus trial.</li>
+        <li>Black line: unfiltered, uncentered breathing trace.</li>
+        <li>Green lines: stimulus onset for this trial, and for next trial.</li>
+        <li>Red/blue lines: expirations/inspirations. Pulled out as "zero-crossings" (45th percentile, computed per
+            audio file) of 50Hz lowpass-filtered breathing. y-value corresponds to this zero-crossing.</li>
+    </ul>
+
+    Filter Description:
+    <ul>
+        <li>Stim phase: whether stimulation occured during inspiration or expiration. "Error" if breath segmentation
+            failed for some reason.</li>
+        <li>Putative call: whether this trial contains breath amplitude in 98th percentile of file.</li>
+        <li>Wav filename: matches any part of original wav filename.</li>
+    </ul>
+
+    Download the plots <a
+        href="https://github.com/cirorandazzo/callbacks-breathing-plot_tool/tree/master/data/breath_figs">from
+        GitHub.</a>
+
     <h2 id="dataTable-title">Filtered Trials</h2>
     <div id="dataTable-label"></div>
     <table id="dataTable">
