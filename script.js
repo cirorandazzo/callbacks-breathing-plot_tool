@@ -77,21 +77,33 @@ document.addEventListener('DOMContentLoaded', function () {
         function applyFilters() {
             const birdFilter = document.getElementById('birdFilter').value;
             const stimPhaseFilter = document.getElementById('stimPhaseFilter').value;
-            const putativeCallFilter = document.getElementById('putativeCallFilter').value === 'true';
+            const putativeCallFilter = document.getElementById('putativeCallFilter').value;
             const blockFilter = document.getElementById('blockFilter').value;
             const wavFilenameFilter = document.getElementById('wavFilenameFilter').value.toLowerCase();
+            const plotIDFilter = document.getElementById('plotIDFilter').value.toLowerCase();
 
             // Filter the data
             const filteredData = jsonData.filter(item => {
                 // if the filter can have value == false, make sure first item of ternary operator is passed as a string (else it always returns true.)
+                // true after colon, since you should show item if the filter is empty (ie, "all" selected)
                 const matchesBird = birdFilter ? item.bird === birdFilter : true;
                 const matchesStimPhase = stimPhaseFilter ? item.stim_phase === stimPhaseFilter : true;
-                const matchesPutativeCall = String(putativeCallFilter) ? item.putative_call === putativeCallFilter : true;
+                const matchesPutativeCall = putativeCallFilter ? String(item.putative_call) === String(putativeCallFilter) : true;
                 const matchesBlock = blockFilter ? String(item.block) === blockFilter : true;
                 const matchesWavFilename = wavFilenameFilter ? item.wav_filename.toLowerCase().includes(wavFilenameFilter) : true;
+                const matchesPlotID = plotIDFilter ? item.plot_id.toLowerCase().includes(plotIDFilter) : true;
 
-                return matchesBird && matchesStimPhase && matchesPutativeCall && matchesBlock && matchesWavFilename;
+                const good = matchesBird && matchesStimPhase && matchesPutativeCall && matchesBlock && matchesWavFilename && matchesPlotID;
+
+                // if (!good) {
+                //     console.log(item);
+                //     console.log(matchesBird, matchesStimPhase, matchesPutativeCall, matchesBlock, matchesWavFilename, matchesPlotID);
+                // }
+
+                return good;
             });
+            // console.log(jsonData);
+            // console.log(filteredData);
 
             // Update the table with filtered data
             updateTable(filteredData);
@@ -117,14 +129,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 // console.log(item.plot_filename);
 
                 // Construct row
+
+                // Labels
                 row.innerHTML = `
                     <td>${item.bird}</td>
                     <td>${item.stim_phase}</td>
                     <td>${item.putative_call}</td>
                     <td>${item.block}</td>
                 `;
+
+                //Image
                 row.appendChild(imageCell);
+
+                // Plot id, wavefilename
                 row.innerHTML += `
+                    <td>${item.plot_id}</td>
                     <td>${item.wav_filename}</td>
                 `;
                 tableBody.appendChild(row);
@@ -146,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('blockFilter').addEventListener('change', applyFilters);
         document.getElementById('putativeCallFilter').addEventListener('change', applyFilters);
         document.getElementById('wavFilenameFilter').addEventListener('change', applyFilters);
+        document.getElementById('plotIDFilter').addEventListener('change', applyFilters);
     }
 
     loadData();

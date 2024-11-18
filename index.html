@@ -85,10 +85,15 @@
     </div>
 
     <div>
+        <label for="plotIDFilter">Plot ID:</label>
+        <input type="text" id="plotIDFilter" placeholder="Search plot ID">
+
         <label for="wavFilenameFilter">Wav Filename:</label>
         <input type="text" id="wavFilenameFilter" placeholder="Search wav filename">
     </div>
 
+    <hr>
+    
     Plot Description:
     <ul>
         <li>Each plot represents 1 stimulus trial.</li>
@@ -119,6 +124,8 @@
     or <a href="https://github.com/cirorandazzo/callbacks-breathing-plot_tool/tree/master/data/breath_figs">view on
         GitHub.</a>
 
+    <hr>
+
     <h2 id="dataTable-title">Filtered Trials</h2>
     <div id="dataTable-label"></div>
     <table id="dataTable">
@@ -129,6 +136,7 @@
                 <th>Call</th>
                 <th>Block</th>
                 <th>Plot</th>
+                <th>Plot ID</th>
                 <th>Wav Filename</th>
             </tr>
         </thead>
