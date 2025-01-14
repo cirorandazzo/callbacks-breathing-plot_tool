@@ -103,29 +103,16 @@ document.addEventListener('DOMContentLoaded', function () {
             const tableBody = document.querySelector('#dataTable tbody');
             tableBody.innerHTML = ''; // Clear existing rows
     
-            // Get the selected plot key
-            const plotKey = document.getElementById('plotKeySelector').value;
+            // Get the selected plot types
+            const plotKeys = Array.from(document.getElementById('plotKeySelector').selectedOptions).map(option => option.value);
+    
+            // Dynamically add or remove columns based on selected plot types
+            addColumns(plotKeys);
     
             data.forEach(item => {
                 const row = document.createElement('tr');
     
-                // Create image elements for the selected plot type
-                const imageCell = document.createElement('td');
-                const image = document.createElement('img');
-    
-                // Check if the selected plot type exists in the current item
-                if (item.plot_filename && item.plot_filename[plotKey]) {
-                    image.src = item.plot_filename[plotKey]; // Get image path from JSON based on the selected key
-                    image.alt = `${item.plot_id} - ${plotKey}`;
-                    image.style.width = "800px"; // Optional styling for the image size
-                    image.style.height = "auto";
-                } else {
-                    image.src = ''; // Set to an empty string if the key doesn't exist
-                    image.alt = 'No plot available';
-                }
-                imageCell.appendChild(image);
-    
-                // Construct row with other details
+                // Add non-plot columns
                 row.innerHTML = `
                     <td>${item.bird}</td>
                     <td>${item.stim_phase}</td>
@@ -133,8 +120,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td>${item.block}</td>
                 `;
     
-                // Add the plot image and other info
-                row.appendChild(imageCell);
+                // Add the plot images for each selected plot type
+                plotKeys.forEach(plotKey => {
+                    const imageCell = document.createElement('td');
+                    const image = document.createElement('img');
+    
+                    if (item.plot_filename && item.plot_filename[plotKey]) {
+                        image.src = item.plot_filename[plotKey]; // Get image path from JSON based on the selected key
+                        image.alt = `${item.plot_id} - ${plotKey}`;
+                        image.style.width = "400px"; // Optional styling for the image size
+                        image.style.height = "auto";
+                    } else {
+                        image.src = ''; // Set to an empty string if the key doesn't exist
+                        image.alt = 'No plot available';
+                    }
+                    imageCell.appendChild(image);
+                    row.appendChild(imageCell);
+                });
+    
+                // Add plot ID and wav filename columns
                 row.innerHTML += `
                     <td>${item.plot_id}</td>
                     <td>${item.wav_filename}</td>
@@ -144,6 +148,39 @@ document.addEventListener('DOMContentLoaded', function () {
     
             // Update trial count
             document.getElementById('dataTable-label').innerHTML = String(data.length) + ' trials found.';
+        }
+    
+        // Function to dynamically add or remove columns based on selected plot types
+        function addColumns(plotKeys) {
+            const tableHeader = document.querySelector('#dataTable thead tr');
+            const tableBody = document.querySelector('#dataTable tbody');
+    
+            // Remove existing plot columns from the header and rows
+            while (tableHeader.children.length > 4) {
+                tableHeader.deleteCell(4); // Remove plot columns
+            }
+    
+            // Remove plot columns from the body rows
+            tableBody.querySelectorAll('tr').forEach(row => {
+                while (row.cells.length > 7) {
+                    row.deleteCell(4); // Remove plot cells
+                }
+            });
+    
+            // Add new plot columns in the header
+            plotKeys.forEach(plotKey => {
+                const newHeaderCell = document.createElement('th');
+                newHeaderCell.textContent = plotKey.charAt(0).toUpperCase() + plotKey.slice(1);
+                tableHeader.appendChild(newHeaderCell);
+            });
+    
+            // Add headers for Plot ID and Wav Filename at the end (if not already present)
+            if (tableHeader.children.length <= 6) {
+                tableHeader.innerHTML += `
+                    <th>Plot ID</th>
+                    <th>Wav Filename</th>
+                `;
+            }
         }
     
         // Initialize filters and apply them
@@ -158,11 +195,12 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('wavFilenameFilter').addEventListener('change', applyFilters);
         document.getElementById('plotIDFilter').addEventListener('change', applyFilters);
     
-        // Event listener for plot type change
+        // Event listener for plot type selection
         document.getElementById('plotKeySelector').addEventListener('change', function() {
-            applyFilters(); // Reapply filters to update the table with the new plot type
+            applyFilters(); // Reapply filters and update the table when plot types change
         });
     }
+       
 
     loadData();
 });
