@@ -199,6 +199,18 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('plotKeySelector').addEventListener('change', function() {
             applyFilters(); // Reapply filters and update the table when plot types change
         });
+
+        // Event listener for plot size
+        document.getElementById('plotSizeSlider').addEventListener('input', function() {
+            const plotSize = this.value;
+            document.getElementById('plotSizeValue').textContent = `${plotSize}px`;
+        
+            // Update the plot images in the table
+            document.querySelectorAll('#dataTable img').forEach(image => {
+                image.style.width = `${plotSize}px`;
+            });
+        });
+        
     }
        
 
