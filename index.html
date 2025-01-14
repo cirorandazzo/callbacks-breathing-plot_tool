@@ -126,6 +126,21 @@
     <hr>
 
     <h2 id="dataTable-title">Filtered Trials</h2>
+    
+    <div>
+        <label for="plotKeySelector">Select Plot Types:</label>
+        <select id="plotKeySelector" multiple>
+            <option value="original">Original</option>
+            <option value="rolling_min">Rolling Min</option>
+            <!-- Add other plot types as necessary -->
+        </select>        
+
+        <!-- Slider for adjusting plot size -->
+        <label for="plotSizeSlider">Adjust Plot Size:</label>
+        <input type="range" id="plotSizeSlider" min="100" max="1000" value="400">
+        <span id="plotSizeValue">400px</span>
+    </div>
+
     <div id="dataTable-label"></div>
     <table id="dataTable">
         <thead>
